@@ -20,14 +20,14 @@ public class PredictorService {
     public PredictorService(String modelDir) throws IOException, ai.djl.MalformedModelException {
         manager = NDManager.newBaseManager();
         Model model = Model.newInstance("energy-mix-classifier");
-        model.load(Paths.get(modelDir), "EnergyMixClassifier");
+        model.load(Paths.get(modelDir), "energy-mix-classifier");
 
-        labels = EnergyMixClassifier.getLabels();
+        labels = new String[]{"fossil", "green"};
         predictor = model.newPredictor(new EnergyTranslator(labels));
     }
 
-    public String predict(float renewable, float coal, float gas) throws TranslateException {
-        NDArray inputArray = manager.create(new float[] { renewable, coal, gas });
+    public String predict(float quantityMj) throws TranslateException {
+        NDArray inputArray = manager.create(new float[] { quantityMj });
         NDList input = new NDList(inputArray);
         Classifications result = predictor.predict(input);
 

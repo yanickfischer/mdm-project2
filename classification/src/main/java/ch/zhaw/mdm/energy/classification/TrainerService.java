@@ -24,17 +24,18 @@ public class TrainerService {
 
     public static void trainModel(String csvPath, String modelDir) throws IOException, TranslateException {
         try (NDManager manager = NDManager.newBaseManager()) {
-            ArrayDataset dataset = EnergyMixClassifier.loadDataset(manager, csvPath);
+            var records = EnergyDatasetLoader.loadDataset(csvPath);
+            ArrayDataset dataset = EnergyDatasetBuilder.buildDataset(records, manager);
 
             try (Model model = Model.newInstance("energy-mix-classifier")) {
-                // Input size: 3 (renewable, coal, gas), Output size: 3 (green, neutral, fossil)
-                model.setBlock(new Mlp(3, 3, new int[]{10}));
+                // Input size: 1 (quantity_MJ), Output size: 2 (fossil, green)
+                model.setBlock(new Mlp(1, 2, new int[]{10}));
 
                 DefaultTrainingConfig config = setupTrainingConfig();
 
                 try (Trainer trainer = model.newTrainer(config)) {
                     trainer.setMetrics(new Metrics());
-                    trainer.initialize(new ai.djl.ndarray.types.Shape(1, 3));
+                    trainer.initialize(new ai.djl.ndarray.types.Shape(1, 1));
 
                     for (int epoch = 0; epoch < 10; epoch++) {
                         for (Batch batch : trainer.iterateDataset(dataset)) {
