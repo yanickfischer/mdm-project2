@@ -1,0 +1,50 @@
+HELP.md
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle (falls versehentlich enthalten)
+build/
+
+# STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# Generated files
+*.jar
+*.war
+
+# OS-specific files
+.DS_Store
+
+# Backup files
+*.bak
+
+# Temporary files
+*.tmp
